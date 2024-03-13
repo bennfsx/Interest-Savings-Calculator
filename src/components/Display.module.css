@@ -1,0 +1,12 @@
+.displaybg {
+  display: flex;
+  justify-content: space-between; /* This will create space between the two components */
+  padding: 20px; /* Adjust padding as needed */
+}
+
+/* Add styles for individual form and calculate containers if needed */
+.formContainer,
+.calculateContainer {
+  flex: 1; /* This will allow each child to take up equal space */
+  margin: 0 10px; /* This will create a gap between the components */
+}

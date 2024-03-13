@@ -1,7 +1,8 @@
 import React from "react";
+import Display from "./components/Display";
 
 const App = () => {
-  return <div></div>;
+  return <Display></Display>;
 };
 
 export default App;
