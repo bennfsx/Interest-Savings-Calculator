@@ -7,6 +7,7 @@
 /* Add styles for individual form and calculate containers if needed */
 .formContainer,
 .calculateContainer {
-  flex: 1; /* This will allow each child to take up equal space */
-  margin: 0 10px; /* This will create a gap between the components */
+  flex: 0; /* This will allow each child to take up equal space */
+  margin: 0 500px; /* This will create a gap between the components */
+  margin-top: -400px;
 }

@@ -6,32 +6,28 @@ import style from "./Display.module.css";
 const Form = (props) => {
   const [accountBalance, setAccountBalance] = useState("");
   const [baseInterest, setBaseInterest] = useState(null);
-  const [salaryBonus, setSalaryBonus] = useState(null);
-  const [payBillBonus, setPayBillBonus] = useState(null);
-  const [ccSpendBonus, setccSpendBonus] = useState(null);
+  const [annualAmount, setAnnualAmount] = useState(null);
+  const [monthlyAmount, setMonthlyAmount] = useState(null);
   const [isCreditSalaryValid, setIsCreditSalaryValid] = useState(null);
-  const [calculate, setCalculate] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.ocbc.com:8243/OCBC360_Interest/1.0?accountBalance=${accountBalance}`,
-          {
-            headers: {
-              Authorization: "Bearer 09bc8a7e-728d-3abb-ab56-945e58871f3b",
-            },
-          }
-        );
-
+        let url = `https://api.ocbc.com:8243/OCBC360_Interest/1.0?accountBalance=${accountBalance}`;
+        if (isCreditSalaryValid)  {
+          url += `&salary=true`;
+        }
+        const response = await fetch(url, {
+          headers: {
+            Authorization: "Bearer 09bc8a7e-728d-3abb-ab56-945e58871f3b",
+          },
+        });
+  
         if (response.ok) {
           const data = await response.json();
           setBaseInterest(data.results.component.baseInterest);
-          setSalaryBonus(data.results.component.salaryBonus);
-          setPayBillBonus(data.results.component.payBillBonus);
-          setccSpendBonus(data.result.component.ccSpendBonus);
-          console.log(setBaseInterest);
-          console.log(setSalaryBonus);
+          setAnnualAmount(data.results.totalYearly);
+          setMonthlyAmount(data.results.totalMonthly);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -39,36 +35,13 @@ const Form = (props) => {
         console.error("Error fetching data:", error.message);
       }
     };
-
+  
     fetchData();
-  }, [accountBalance]); // Trigger useEffect on accountBalance change
+  }, [accountBalance, isCreditSalaryValid]);
+  
+  
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://api.ocbc.com:8243/OCBC360_Interest/1.0?accountBalance=${creditSalary}`,
-          {
-            headers: {
-              Authorization: "Bearer 09bc8a7e-728d-3abb-ab56-945e58871f3b",
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setBaseInterest(data.results.component.baseInterest);
-        } else {
-          console.error("Failed to fetch data:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    };
-
-    fetchData();
-  }, [accountBalance]); // Trigger useEffect on accountBalance change
-
+  //set accBalance value as current target value
   const handleAccountBalanceChange = (e) => {
     setAccountBalance(e.target.value);
   };
@@ -77,15 +50,15 @@ const Form = (props) => {
 
   const handleCreditSalaryCheck = (e) => {
     const creditSalary = parseFloat(e.target.value);
-
     if (!isNaN(creditSalary) && creditSalary > 1800) {
       setIsCreditSalaryValid(true);
-      
+      console.log(creditSalary)
     } else {
       setIsCreditSalaryValid(false);
+      console.log(creditSalary)
     }
   };
-
+  
   return (
     <div className={styles.formContainer}>
       <h1 className={styles.formTitle}>Savings Interest Calculator</h1>
@@ -115,7 +88,7 @@ const Form = (props) => {
             type="text"
             className={styles.input}
             placeholder="3"
-            onChange={handleCreditSalaryCheck}
+            // onChange={handleCreditSalaryCheck}
           />
         </label>
         <label className={styles.label}>
@@ -127,26 +100,10 @@ const Form = (props) => {
             value={interestRate !== null ? interestRate + "%" : "Loading..."}
           />
         </label>
-        {/* <button type="submit" className={styles.calculateButton}>
-          Calculate
-        </button> */}
       </form>
 
       <div className={style.calculateContainer}>
-        <Calculate ></Calculate>
-    {/* <div>
-      <h1>Calculate Testing</h1>
-      {calculate.map((item, index)=> (
-            <Calculate
-            id={item.id}
-            annualAmount={item.annualAmount}
-            monthlyAmount={item.monthlyAmount}
-            // onUpdate={handleAccountBalanceChange}
-            /> 
-
-      )) }
-    </div> */}
-    
+        <Calculate annualAmount={annualAmount} monthlyAmount={monthlyAmount} />
       </div>
     </div>
   );
