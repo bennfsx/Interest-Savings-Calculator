@@ -10,7 +10,7 @@ const Form = (props) => {
   const [monthlyAmount, setMonthlyAmount] = useState(null);
   const [isCreditSalaryValid, setIsCreditSalaryValid] = useState(null);
   const [salaryBonus, setSalaryBonus] = useState(null);
-  const [uniqueBillPayments, setUniqueBillPayments] = useState(false);
+  const [uniqueBillPayments, setUniqueBillPayments] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +18,7 @@ const Form = (props) => {
         let url = `https://api.ocbc.com:8243/OCBC360_Interest/1.0?accountBalance=${accountBalance}`;
         if (isCreditSalaryValid)  {
           url += `&salary=true`;
-        } else if (isCreditSalaryValid && uniqueBillPayments){
+        } else if (isCreditSalaryValid !== null && !uniqueBillPayments) {
           url += `&salary=true&payBill=true`;
         }
         const response = await fetch(url, {
@@ -43,10 +43,7 @@ const Form = (props) => {
   
     fetchData();
   }, [accountBalance, isCreditSalaryValid, uniqueBillPayments]);
-  
-  
 
-  //set accBalance value as current target value
   const handleAccountBalanceChange = (e) => {
     setAccountBalance(e.target.value);
   };
@@ -57,19 +54,14 @@ const Form = (props) => {
     const creditSalary = parseFloat(e.target.value);
     if (!isNaN(creditSalary) && creditSalary >= 1800) {
       setIsCreditSalaryValid(true);
-      console.log(creditSalary)
     } else {
       setIsCreditSalaryValid(false);
-      console.log(creditSalary)
     }
   };
 
-  const handleUniqueBillPaymentCheck = (value) =>{
-    setUniqueBillPayments((prevValue) => prevValue === null ? value : !prevValue);
-
-    console.log(uniqueBillPayments);
-    }
-  
+  const handleToggleBillPayments = () => {
+    setUniqueBillPayments((prevState) => !prevState);
+  };
   
   return (
     <div className={styles.formContainer}>
@@ -96,8 +88,9 @@ const Form = (props) => {
         </label>
         <label className={styles.label}>
           Made at least 3 unique bill payments?
-          <button onClick={() => handleUniqueBillPaymentCheck(false)}>Yes</button>
-          <button onClick={() => handleUniqueBillPaymentCheck(true)}>No</button>
+          <button onClick={handleToggleBillPayments}>
+            {uniqueBillPayments ? "No" : "Yes"}
+          </button>
         </label>
         <label className={styles.label}>
           Interest Rate &nbsp;
