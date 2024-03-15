@@ -6,8 +6,11 @@ import style from "./Display.module.css";
 const Form = (props) => {
   const [accountBalance, setAccountBalance] = useState("");
   const [baseInterest, setBaseInterest] = useState(null);
-
+  const [salaryBonus, setSalaryBonus] = useState(null);
+  const [payBillBonus, setPayBillBonus] = useState(null);
+  const [ccSpendBonus, setccSpendBonus] = useState(null);
   const [isCreditSalaryValid, setIsCreditSalaryValid] = useState(null);
+  const [calculate, setCalculate] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +27,11 @@ const Form = (props) => {
         if (response.ok) {
           const data = await response.json();
           setBaseInterest(data.results.component.baseInterest);
+          setSalaryBonus(data.results.component.salaryBonus);
+          setPayBillBonus(data.results.component.payBillBonus);
+          setccSpendBonus(data.result.component.ccSpendBonus);
+          console.log(setBaseInterest);
+          console.log(setSalaryBonus);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -72,6 +80,7 @@ const Form = (props) => {
 
     if (!isNaN(creditSalary) && creditSalary > 1800) {
       setIsCreditSalaryValid(true);
+      
     } else {
       setIsCreditSalaryValid(false);
     }
@@ -101,6 +110,15 @@ const Form = (props) => {
           />
         </label>
         <label className={styles.label}>
+          Number of bills Paid
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="3"
+            onChange={handleCreditSalaryCheck}
+          />
+        </label>
+        <label className={styles.label}>
           Interest Rate &nbsp;
           <input
             type="text"
@@ -109,13 +127,26 @@ const Form = (props) => {
             value={interestRate !== null ? interestRate + "%" : "Loading..."}
           />
         </label>
-        <button type="submit" className={styles.calculateButton}>
+        {/* <button type="submit" className={styles.calculateButton}>
           Calculate
-        </button>
+        </button> */}
       </form>
 
       <div className={style.calculateContainer}>
-        <Calculate />
+        <Calculate ></Calculate>
+    {/* <div>
+      <h1>Calculate Testing</h1>
+      {calculate.map((item, index)=> (
+            <Calculate
+            id={item.id}
+            annualAmount={item.annualAmount}
+            monthlyAmount={item.monthlyAmount}
+            // onUpdate={handleAccountBalanceChange}
+            /> 
+
+      )) }
+    </div> */}
+    
       </div>
     </div>
   );

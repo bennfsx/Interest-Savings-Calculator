@@ -18,7 +18,7 @@ const Calculate = (props) => {
           <h2>S$ {props.monthlyAmount}</h2>
         </div>
       </div>
-      <button className={styles.saveButton}>Save</button>
+      <button className={styles.saveButton}>Save Calculation</button>
     </div>
   );
 };
