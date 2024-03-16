@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Calculate.module.css";
 
 const Calculate = (props) => {
+  
   // Calculate total amount
   const totalAmount = parseFloat(props.annualAmount) + parseFloat(props.accountBalance);
   

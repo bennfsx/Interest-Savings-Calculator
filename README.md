@@ -12,3 +12,4 @@ This is a web application that calculates the interest earned based on your acco
 - React.js
 - CSS Modules
 - Fetch API
+- React Bootstrap

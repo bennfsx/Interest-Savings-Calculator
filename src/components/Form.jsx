@@ -3,6 +3,9 @@ import styles from "./Form.module.css";
 import Calculate from "./Calculate";
 import style from "./Display.module.css";
 import Toggle from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Form = (props) => {
   const [accountBalance, setAccountBalance] = useState("");
@@ -13,6 +16,8 @@ const Form = (props) => {
   const [uniqueBillPayments, setUniqueBillPayments] = useState(false); // Initialize to false
   const [creditCardSpent, setCreditCardSpent] = useState(null);
   const currentDate = new Date().toISOString().slice(0, 10); // Current Date YYYY-MM-DD
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +110,7 @@ const handleCalculateSave = async () => {
               accountBalance: accountBalance.toString(),
               annualAmount: annualAmount.toString(),
               monthlyAmount: monthlyAmount.toString()
+
             }
           }
         ]
@@ -113,6 +119,8 @@ const handleCalculateSave = async () => {
 
     if (response.ok) {
       console.log('Data saved to Airtable successfully');
+      navigate('/Dashboard'); // Redirect to Dashboard
+
       // Clear the form fields or show a success message
     } else {
       console.error('Failed to save data to Airtable:', response.statusText);
