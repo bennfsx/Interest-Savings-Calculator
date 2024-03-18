@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Display.module.css";
 import Form from "./Form";
-import FinancialGoal from "./FinancialGoal";
+import NavBar from "./NavBar";
 
 const Display = () => {
   return (

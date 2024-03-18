@@ -5,8 +5,9 @@
   padding: 20px;
   width: 100%;
   max-width: 500px;
-  max-height: 500px;
+  max-height: 550px;
   margin: 0 auto;
+  margin-top: 150px;
 }
 
 .formTitle {
