@@ -3,8 +3,10 @@ import styles from "./Calculate.module.css";
 
 const Calculate = (props) => {
   
-  // Calculate total amount
-  const totalAmount = parseFloat(props.annualAmount) + parseFloat(props.accountBalance);
+  // Calculate total amount, ensuring that props.annualAmount and props.accountBalance are not null
+  const totalAmount = (props.annualAmount !== null && props.accountBalance !== null)
+    ? parseFloat(props.annualAmount) + parseFloat(props.accountBalance)
+    : 0;
   
   // Format total amount to 2 decimal places with commas
   const formattedTotalAmount = totalAmount.toLocaleString(undefined, {

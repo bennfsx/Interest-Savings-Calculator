@@ -43,7 +43,7 @@ const Form = () => {
           setBaseInterest(data.results.component.baseInterest);
           setAnnualAmount(data.results.totalYearly);
           setMonthlyAmount(data.results.totalMonthly);
-          setDisclaimer(data.disclaimer);
+          
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -58,15 +58,45 @@ const Form = () => {
     isCreditSalaryValid,
     uniqueBillPayments,
     creditCardSpent,
-    disclaimer,
   ]);
+
+  useEffect(() => {
+    // Fetch disclaimer text when component mounts
+    fetchDisclaimer();
+  }, [disclaimer]); // Empty dependency array to fetch only once on component mount
+
+  const fetchDisclaimer = async () => {
+    try {
+      const response = await fetch("https://api.ocbc.com:8243/OCBC360_Interest/1.0", {
+        headers: {
+          Authorization: "Bearer 09bc8a7e-728d-3abb-ab56-945e58871f3b",
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Disclaimer data:", data);
+        setDisclaimer(data.Disclaimer);
+      } else {
+        console.error("Failed to fetch disclaimer:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching disclaimer:", error.message);
+    }
+  };
+
+
 
   //set accBalance value as current target value
   const handleAccountBalanceChange = (e) => {
     setAccountBalance(e.target.value.replace("S$", ""));
   };
 
-  const interestRate = (annualAmount / accountBalance) * 100;
+  const interestRate = 
+  (annualAmount !== null && accountBalance !== null && accountBalance !== 0)
+    ? (annualAmount / accountBalance) * 100
+    : 0;
+
 
   const handleCreditSalaryCheck = (e) => {
     const creditSalary = parseFloat(e.target.value.replace("S$", ""));
@@ -135,10 +165,10 @@ const Form = () => {
 
   return (
     <div className={styles.formContainer}>
-      <h1 className={styles.formTitle}>Savings Interest Calculator</h1>
+      <h1 className={styles.formTitle}>Interest Savings Calculator</h1>
       <form className={styles.form}>
-        <label className={styles.label}>
-          Account Balance
+        <div className={styles.label}>
+          <label>Account Balance</label>
           <input
             type="text"
             className={styles.input}
@@ -146,18 +176,18 @@ const Form = () => {
             value={"S$" + accountBalance}
             onChange={handleAccountBalanceChange}
           />
-        </label>
-        <label className={styles.label}>
-          Credit Salary
+        </div>
+        <div className={styles.label}>
+          <label>Credit Salary</label>
           <input
             type="text"
             className={styles.input}
             placeholder="S$52,000"
             onChange={handleCreditSalaryCheck}
           />
-        </label>
-        <label className={styles.label}>
-          Have you made at least 3 unique bill payments?
+        </div>
+        <div className={styles.label}>
+          <label>Have you made at least 3 unique bill payments?</label>
           <div className={styles.toggleContainer}>
             <label className={styles.toggleLabel}>
               <Toggle.Check
@@ -169,29 +199,30 @@ const Form = () => {
               />
             </label>
           </div>
-          <label className={styles.label}>
-            Credit Card Spendings
-            <input
-              type="text"
-              className={styles.input}
-              placeholder="S$500"
-              onChange={handleCreditCardSpending}
-            />
-          </label>
-        </label>
-        <label className={styles.label}>
-          Interest Rate &nbsp;
+        </div>
+        <div className={styles.label}>
+          <label>Credit Card Spendings</label>
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="S$500"
+            onChange={handleCreditCardSpending}
+          />
+        </div>
+        <div className={styles.label}>
+          <label>Interest Rate</label>
           <input
             type="text"
             className={styles.inputInterest}
             readOnly
             value={
               interestRate !== null
-                ? interestRate.toFixed(4) + "%"
+                ? interestRate.toFixed(2) + "%"
                 : "Loading..."
             }
           />
-        </label>
+        </div>
+        {disclaimer && <Disclaimer disclaimer={disclaimer} />}
       </form>
 
       <div className={style.calculateContainer}>
@@ -202,8 +233,6 @@ const Form = () => {
           onSave={handleCalculateSave}
         />
       </div>
-
-      {disclaimer && <Disclaimer disclaimer={disclaimer} />}
     </div>
   );
 };

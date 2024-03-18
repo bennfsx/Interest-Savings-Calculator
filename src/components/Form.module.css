@@ -3,11 +3,11 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   padding: 20px;
-  width: 100%;
+  width: auto;
   max-width: 500px;
-  max-height: 550px;
+  max-height: 700px;
   margin: 0 auto;
-  margin-top: 150px;
+  margin-top: 50px;
 }
 
 .formTitle {
@@ -26,6 +26,10 @@
   color: #333;
 }
 
+.label>label {
+  display: block;
+}
+
 .input {
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -38,7 +42,7 @@
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 10px;
-  width: 20%;
+  width: auto;
 }
 
 .calculateButton {
