@@ -14,35 +14,36 @@ const Table = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator",
-          {
-            headers: {
-              Authorization:
-                "Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b",
-            },
-          }
-        );
-        if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData.records);
-        } else {
-          console.error(
-            "Failed to fetch data from Airtable:",
-            response.statusText
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching data from Airtable:", error.message);
-      } finally {
-        setLoading(false); // Set loading state to false when data fetching is completed
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator",
+        {
+          headers: {
+            Authorization:
+              "Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b",
+          },
+        }
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        setData(responseData.records);
+      } else {
+        console.error(
+          "Failed to fetch data from Airtable:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data from Airtable:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDelete = async () => {
     try {
@@ -58,11 +59,7 @@ const Table = () => {
       );
       if (response.ok) {
         console.log("Record deleted successfully");
-        // Refresh data after deletion
-        const updatedData = data.filter(
-          (record) => record.id !== selectedRecord.id
-        );
-        setData(updatedData);
+        window.location.reload(); // Refresh the page after deletion
       } else {
         console.error("Failed to delete record:", response.statusText);
       }
@@ -77,6 +74,7 @@ const Table = () => {
   const handleConfirmationClose = () => {
     setShowConfirmation(false);
     setSelectedRecord(null);
+    window.location.reload(); // Refresh the page after cancellation
   };
 
   const handleConfirmationShow = (record) => {
@@ -110,19 +108,7 @@ const Table = () => {
       );
       if (response.ok) {
         console.log("Tag updated successfully");
-        const updatedData = data.map((record) => {
-          if (record.id === selectedRecord.id) {
-            return {
-              ...record,
-              fields: {
-                ...record.fields,
-                tag: editedTag,
-              },
-            };
-          }
-          return record;
-        });
-        setData(updatedData);
+        window.location.reload(); // Refresh the page after saving
       } else {
         console.error("Failed to update tag:", response.statusText);
       }
