@@ -4,7 +4,7 @@ const Disclaimer = (props) => {
   return (
     <div>
       <p>
-        <b>Disclaimer</b>
+        <b>Disclaimer: </b>
         {props.disclaimer}
       </p>
     </div>

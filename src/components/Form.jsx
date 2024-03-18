@@ -192,9 +192,6 @@ const Form = () => {
             }
           />
         </label>
-        <label>
-          <Disclaimer disclaimer={disclaimer} />
-        </label>
       </form>
 
       <div className={style.calculateContainer}>
@@ -205,6 +202,8 @@ const Form = () => {
           onSave={handleCalculateSave}
         />
       </div>
+
+      {disclaimer && <Disclaimer disclaimer={disclaimer} />}
     </div>
   );
 };

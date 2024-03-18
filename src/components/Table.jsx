@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Table.module.css";
-import TableStyle from 'react-bootstrap/Table';
-import LoadingAnimation from 'react-bootstrap/Spinner';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import TableStyle from "react-bootstrap/Table";
+import LoadingAnimation from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const Table = () => {
   const [data, setData] = useState([]);
@@ -16,19 +16,26 @@ const Table = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator', {
-          headers: {
-            Authorization: 'Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b'
+        const response = await fetch(
+          "https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator",
+          {
+            headers: {
+              Authorization:
+                "Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b",
+            },
           }
-        });
+        );
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData.records);
         } else {
-          console.error('Failed to fetch data from Airtable:', response.statusText);
+          console.error(
+            "Failed to fetch data from Airtable:",
+            response.statusText
+          );
         }
       } catch (error) {
-        console.error('Error fetching data from Airtable:', error.message);
+        console.error("Error fetching data from Airtable:", error.message);
       } finally {
         setLoading(false); // Set loading state to false when data fetching is completed
       }
@@ -39,22 +46,28 @@ const Table = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator/${selectedRecord.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b'
+      const response = await fetch(
+        `https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator/${selectedRecord.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization:
+              "Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b",
+          },
         }
-      });
+      );
       if (response.ok) {
-        console.log('Record deleted successfully');
+        console.log("Record deleted successfully");
         // Refresh data after deletion
-        const updatedData = data.filter(record => record.id !== selectedRecord.id);
+        const updatedData = data.filter(
+          (record) => record.id !== selectedRecord.id
+        );
         setData(updatedData);
       } else {
-        console.error('Failed to delete record:', response.statusText);
+        console.error("Failed to delete record:", response.statusText);
       }
     } catch (error) {
-      console.error('Error deleting record:', error.message);
+      console.error("Error deleting record:", error.message);
     } finally {
       setShowConfirmation(false);
       setSelectedRecord(null);
@@ -79,38 +92,42 @@ const Table = () => {
 
   const handleSaveTag = async () => {
     try {
-      const response = await fetch(`https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator/${selectedRecord.id}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: 'Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          fields: {
-            tag: editedTag
-          }
-        })
-      });
+      const response = await fetch(
+        `https://api.airtable.com/v0/appETAOnMCK006o6N/InterestCalculator/${selectedRecord.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization:
+              "Bearer patvMJsFSeycxRJiT.0a334de1aedd5f7ff42ce8d7db915df4c27917c34bc79c7805b1ccdaff50484b",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fields: {
+              tag: editedTag,
+            },
+          }),
+        }
+      );
       if (response.ok) {
-        console.log('Tag updated successfully');
-        const updatedData = data.map(record => {
+        console.log("Tag updated successfully");
+        const updatedData = data.map((record) => {
           if (record.id === selectedRecord.id) {
             return {
               ...record,
               fields: {
                 ...record.fields,
-                tag: editedTag
-              }
+                tag: editedTag,
+              },
             };
           }
           return record;
         });
         setData(updatedData);
       } else {
-        console.error('Failed to update tag:', response.statusText);
+        console.error("Failed to update tag:", response.statusText);
       }
     } catch (error) {
-      console.error('Error updating tag:', error.message);
+      console.error("Error updating tag:", error.message);
     } finally {
       setEditedTag("");
       setShowEditModal(false);
@@ -148,16 +165,50 @@ const Table = () => {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{record.fields.date}</td>
-                <td>S${parseFloat(record.fields.accountBalance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td>S${parseFloat(record.fields.annualAmount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td>S${parseFloat(record.fields.monthlyAmount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td>S${(parseFloat(record.fields.accountBalance) + parseFloat(record.fields.annualAmount)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td>{record.fields.tag}</td>
                 <td>
-                  <Button variant="info" onClick={() => handleEditTag(record)}>Edit</Button>
+                  S$
+                  {parseFloat(record.fields.accountBalance).toLocaleString(
+                    undefined,
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                  )}
                 </td>
                 <td>
-                  <Button variant="danger" onClick={() => handleConfirmationShow(record)}>Delete</Button>
+                  S$
+                  {parseFloat(record.fields.annualAmount).toLocaleString(
+                    undefined,
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                  )}
+                </td>
+                <td>
+                  S$
+                  {parseFloat(record.fields.monthlyAmount).toLocaleString(
+                    undefined,
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                  )}
+                </td>
+                <td>
+                  S$
+                  {(
+                    parseFloat(record.fields.accountBalance) +
+                    parseFloat(record.fields.annualAmount)
+                  ).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </td>
+                <td>{record.fields.tag}</td>
+                <td>
+                  <Button variant="info" onClick={() => handleEditTag(record)}>
+                    Edit
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleConfirmationShow(record)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -168,9 +219,7 @@ const Table = () => {
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete this record?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want to delete this record?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleConfirmationClose}>
             Cancel
