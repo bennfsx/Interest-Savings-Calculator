@@ -10,7 +10,8 @@ html {
 
 body {
   margin: 0;
-  background-color: whitesmoke;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(240,249,249,1) 0%, rgba(255,255,255,1) 50%, rgba(236,249,249,1) 100%);
 }
 
 .centered {
