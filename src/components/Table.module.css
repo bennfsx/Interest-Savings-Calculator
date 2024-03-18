@@ -1,10 +1,8 @@
-
-
 .tableContainer {
-    margin-top: 20px;
-    width: 60%;
-    margin-left: 350px;
-  }
+  margin-top: 20px;
+  width: 60%;
+  margin: 0 auto; /* Center the table container horizontally */
+}
   
   .table {
     width: 100%;

@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: -480px auto;
+  margin-bottom: 300px;
 }
 
 .header h1,
