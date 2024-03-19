@@ -28,15 +28,11 @@ This is a web application that calculates the interest earned based on your acco
 **Link to App*: https://interest-savings-calculator-60r80kcy5-bennfsxs-projects.vercel.app/
 <ol>
     <li>**Input Your Financial Details**: Fill in your account balance, credit salary, bill payments, and credit card spendings in the provided form fields.</li>
-    <li>**Save Your Calculation**: Click on the "Save Results" button to save your calculation records. You will then be redirected to the dashboard page where you can manage your saved records.
-</li>
-    <li>**Manage Your Records**: On the dashboard page, you can edit or add a tag to your saved records. Additionally, you have the option to delete records from the table.
-</li>
-    <li>**Visualize Account Balance Over Time**: Select a tag from the dropdown menu to visualize the account balance over time. The line chart provides a projected visualization of your earnings growth over the next 12 months.
-<li>
-    <li>**Interpret the Chart**: Analyze the chart to understand how your account balance is expected to grow based on your financial inputs and projections.
-<li>
-<ol>  
+    <li>**Save Your Calculation**: Click on the "Save Results" button to save your calculation records. You will then be redirected to the dashboard page where you can manage your saved records. </li>
+    <li>**Manage Your Records**: On the dashboard page, you can edit or add a tag to your saved records. Additionally, you have the option to delete records from the table.</li>
+    <li>**Visualize Account Balance Over Time**: Select a tag from the dropdown menu to visualize the account balance over time. The line chart provides a projected visualization of your earnings growth over the next 12 months.</li>
+    <li>**Interpret the Chart**: Analyze the chart to understand how your account balance is expected to grow based on your financial inputs and projections.</li>
+</ol>  
 
 
 ## Future Enhancements
